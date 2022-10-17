@@ -1,33 +1,18 @@
-/**
- * @param {string} secret
- * @param {string} guess
- * @return {string}
- */
-function getHint(secret, guess) {
-    let cows = 0;
-    let bulls = 0;
-    const occurrences = Array(10).fill(0);
-
-    for (let i = 0; i < secret.length; i++) {
-        const guessNumber = parseInt(guess[i]);
-        const secretNumber = parseInt(secret[i]);
-        
-        if (secretNumber === guessNumber) {
-            bulls++;
-            continue
-        }
-
-        if(occurrences[secretNumber] < 0) {
-            cows++;
-        }
-        
-        if(occurrences[guessNumber] > 0) {
-            cows++;
-        }
-        
-        occurrences[secretNumber]++;
-        occurrences[guessNumber]--;
+var getHint = function(secret, guess) {
+  let bull = 0;
+  let cow = 0;
+  const map = {};
+  for (let i = 0; i < secret.length; i++) {
+    const s = secret.charAt(i);
+    const g = guess.charAt(i);
+    if (s === g) {
+      bull++;
+    } else {
+      if (map[s] < 0) cow++;
+      if (map[g] > 0) cow++;
+      map[s] = parseInt(map[s] || '0') + 1;
+      map[g] = parseInt(map[g] || '0') - 1;
     }
-  
-    return `${bulls}A${cows}B`;
-}
+  }
+  return `${bull}A${cow}B`;
+};
